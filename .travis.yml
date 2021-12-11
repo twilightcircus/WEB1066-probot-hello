@@ -1,3 +1,16 @@
-language: node_js
-node_js:
-  - "8.3"
+sudo: required
+services:
+- docker
+before_install:
+- docker pull node:8-onbuild
+install:
+- docker build -t probot-hello .
+script:
+- docker run --rm probot-hello npm run test
+- docker run --rm probot-hello npm run lint
+deploy:
+  provider: heroku
+  api_key:
+    secure: h0TZqa5Vo/zniYTOaAbLafPjFlVoO9IrGM1lwYOKeL+skq2+NBs//jx8Ph3n/mj7EQoVXRIaxGh5FKCX1+7TX9R2wATCwW1QRj68QrEqkub+tly849khHuL0eq4/dVIEy4e/51vgpdwUwAJdY9vShsojwdURfoEkkOGkXDnmmXvaKMGiM7R6bzcP33nu+lRkhaDJ/ZBgH99bz4Si5DtPnyrov2joamSF++TBkqYDVV9L4yxk2w35B83rasCBw+BuCyYdu02SUPl4og5X+Kp71871QUMVuBZgU6wVOanaVCi1abEhknh7piNrtAKjIhhomwiibntnCtLwT8nTWXXq1rABq0l/UOVR+AXVmeErhqGz8cqFrAmAFQe5lKz6rkq+0Ohvs+UzHs711CqgNym1YM6a3cJrnun9SsPMOsmaKIJ+BMb0JMoyDp+URZIDu6Cxo5l4qsgt5K/1k8lqmhq9lk3f0WbRt4rnVHVLPHw/EKwiJE0U3bXaH7m9VSXxJajgkc1/8P5ffbsOT7ZErZVd9yNT1EoOug463N4zOFF6j0ViuaQiFAxtCp3HQAsCbPy7uQIuDErDECG/1n+U4LPI439200R0B1IY+kjsxpY89TYeJkyO4xoAgqCZp+EYB7mxZHKDJjHTEYVz7w3PV6owNXli4KuH6fD0gybPcOyADzA=
+  on: heroku_production
+  app: probot-tc420
